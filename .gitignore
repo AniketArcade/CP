@@ -1,0 +1,14 @@
+# Compiled binaries
+*.bin
+*.o
+*.out
+
+# Temp files
+tempCodeRunnerFile
+tempCodeRunnerFile.cpp
+
+# CPH (Competitive Programming Helper) cache
+.cph/
+
+# VS Code
+.vscode/

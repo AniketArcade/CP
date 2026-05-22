@@ -17,9 +17,8 @@ void solve()
         else if(a[i]==x){
             x=a[i];
         }
-        else if(a[i]>x && a[i]<y){
+        else if(a[i]<y){
             y=a[i];
-            ans++;
         }
         else if(a[i]==y){
             y=a[i];

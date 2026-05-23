@@ -4,7 +4,16 @@ using namespace std;
 
 void solve()
 {
-    
+    int x;
+    cin>>x;
+    x--;
+    string s="HelloWorld";
+    string ans;
+    for(int i=0;i<10;i++)
+    {
+       if(i!=x) ans+=s[i];
+    }
+    cout<<ans;
 }
 signed main()
 {

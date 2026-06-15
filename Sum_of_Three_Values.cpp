@@ -5,25 +5,30 @@ using namespace std;
 void solve()
 {
     int n,x;cin>>n>>x;
-    vector<int> a(n+1);
-    for(int i=1;i<=n;i++) cin>>a[i];
+    vector<pair<int,int>> a(n+1);
+    for(int i=1;i<=n;i++) {
+        int ai;cin>>ai;
+        a[i]={ai,i};
+    }
+    sort(a.begin(),a.end());
+    
     for(int j=1;j<=n;j++)
     {
-     map<int,int> mp;
-     int tar=x;tar -=a[j];
-     for(int i=1;i<=n;i++){
-        if(i==j) continue;
-        else{
-            auto it=mp.find(tar-a[i]);
-            if(it!=mp.end()){
-                cout<<i<<" "<<j<<" "<<it->second;
-                return ;
-            }
-            else {
-                mp[a[i]]=i;
-            }
-        }
-    }
+     int l=j+1,r=n;
+      while(l<r)
+     {
+        int sum=a[l].first+a[r].first+a[j].first;
+       if(sum>x) {
+        r--;
+       }
+       else if(sum<x){
+        l++;
+       }
+       else {
+        cout<<a[j].second<<" "<<a[l].second<<" "<<a[r].second;
+        return ;
+       }
+     }
     }
     cout<<"IMPOSSIBLE";
 }

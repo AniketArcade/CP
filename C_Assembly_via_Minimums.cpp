@@ -6,23 +6,19 @@ void solve()
 {
     int n;
     cin>>n;
+    int m=(n*(n-1))/2;
+    vector<int> b(m);
+    for(int i=0;i<m;i++) cin>>b[i];
+    sort(b.begin(),b.end());
     vector<int> a(n);
-    for(int i=0;i<n;i++) cin>>a[i];
-    
-    int k;
-    for(int j=1;j<=60;j++)
-    {
-       k=1ll<<j;
-       set<int> s;
-       for(int i=0;i<n;i++)
-       {
-           s.insert(a[i]%k);
-       }
-       if(s.size()==2){
-        cout<<k;
-        return ;
-       }
-    }
+   int idx = 0;
+   for (int i=0;i<n-1;i++) {
+    a[i]=b[idx];
+    idx+=(n - i - 1);
+   }
+    a[n - 1]=1000000000;
+   
+    for(int i=0;i<n;i++) cout<<a[i]<<" ";
 
 }
 signed main()
@@ -31,5 +27,7 @@ signed main()
    cin.tie(0); cout.tie(0);
    int t;cin>>t;while(t--)
    {solve();if(t>0)cout<<"\n";}
+
+
     return 0;
 }

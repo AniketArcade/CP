@@ -1,44 +1,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-
-int n, k0;
-vector<int> base;
-
+int n, k;
+vector<int> a;
 bool check(int s)
 {
-    int M = k0 + n + 2 * s, used = 0;
-    multiset<int> S;        // all current nodes with value >= v
-    vector<int> add(base);  // nodes with value < v, waiting to enter S
-    for (int v = n; v >= 1; v--)
-    {
-        for (int i = 0; i < add[v]; i++) S.insert(v);
-        while ((int)S.size() > M - v)   // too many leaves >= v
-        {
-            if (used++ >= s) return false;
-            int x = *S.begin(); S.erase(S.begin());  // split smallest node >= v
-            int h = (x + 1) / 2;
-            if (h >= v) { S.insert(h); S.insert(h); }
-            else add[h] += 2;
+    int cnt=0;
+    int ck=k+s;if(k+s>=n) return true;
+    priority_queue<int> pq;
+    for(int i=0;i<n;i++) if(a[i]>ck) pq.push(a[i]);
+    while(!pq.empty()){
+        int cur=pq.top();pq.pop();
+        if(cnt>s) return false;
+        if(cur<=k+cnt){
+            cnt++;
+            if(((cur+1)/2)>ck){
+                pq.push((cur+1)/2);
+            pq.push((cur+1)/2);
+            }
+        }
+        else{
+            return false;
         }
     }
     return true;
 }
-
 void solve()
 {
-    cin >> n >> k0;
-    vector<int> a(n);
-    base.assign(n + 2, 0);
-    for (auto &x : a) { cin >> x; base[x]++; }
-    if (k0 < 0) { cout << -1; return; }
-    int lo = 0, hi = 2 * n + 2;
+    cin >> n >> k;
+    a.resize(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    sort(a.begin(),a.end());
+    int lo = 0, hi = 2*n;
+    int ans=hi;
     while (lo < hi)
     {
-        int mid = (lo + hi) / 2;
-        if (check(mid)) hi = mid; else lo = mid + 1;
+        int mid = lo + (hi-lo)/2;
+        if (check(mid)){
+             hi = mid; 
+             ans=mid;
+        }
+        else {
+            lo = mid + 1;
+        }
     }
-    cout << n + 2 * lo;
+    cout << n + 2*ans;
 }
 signed main()
 {
@@ -46,7 +52,5 @@ signed main()
    cin.tie(0); cout.tie(0);
    int t;cin>>t;while(t--)
    {solve();if(t>0)cout<<"\n";}
-   // solve();
-
     return 0;
 }

@@ -1,43 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
+int n;
+vector<vector<int>> g;
+vector<int> vis;
+map<pair<int,int>,int> mp;
+vector<int> dp;
+vector<int> id;
+void dfs(int node){
+    vis[node]=1;
+    for(auto v:g[node])
+    {
+     if(!vis[v]){
+        dp[v] = dp[node] + ( mp[{node,v}]>=id[node] ? 0 : 1 );
+        id[v]= mp[{node,v}];
+        dfs(v);
+     }
+    }
 
-
-
+}
 void solve()
 {
-    int n;
     cin>>n;
-    vector<int> g[n+2];
-    vector<int> vis(n+2,0);
-    map<int,pair<int,int>> mp;
+    g.assign(n+2,{});
+    vis.assign(n+2,0);
+    dp.resize(n+2);
+    id.resize(n+2);
+
     for(int i=0;i<n-1;i++)
     {
         int u,v;cin>>u>>v;
         g[u].push_back(v);
+        g[v].push_back(u);
         
-        mp[i]={u,v};
+        mp[{u,v}]=i+1;
+        mp[{v,u}]=i+1;
     }
   
     int ans=0;
-    vis[1]=1;
-    while(!mp.empty())
-    {
-      for(auto it=mp.begin();it!=mp.end();)
-      {
-          if(vis[it->second.first] && !vis[it->second.second])
-          {
-                vis[it->second.second]=1;
-                it=mp.erase(it);
-          }
-          else if(!vis[it->second.first] && vis[it->second.second])
-          {
-                vis[it->second.first]=1;
-                it=mp.erase(it);
-          }
-          else ++it;
-      }
-      ans++;
+    dp[1]=1;
+    id[1]=0;
+    dfs(1);
+
+    for(int i=1;i<=n;i++){
+        ans=max(ans,dp[i]);
     }
     cout<<ans;
 }
